@@ -28,6 +28,7 @@
 #include "core/asserts.hpp"
 #include "core/logger.hpp"
 #include <ndn-cxx/lp/tags.hpp>
+#include <iostream>
 
 namespace nfd {
 namespace cs {
@@ -139,6 +140,12 @@ Cs::find(const Interest& interest,
 
   if (match == last) {
     NFD_LOG_DEBUG("  no-match");
+    std::cout << "Content Store Start" << std::endl;
+    for (const EntryImpl& entry : m_table) {
+    if(!entry.isStale())
+        std::cout<<entry.getFullName()<<" "<< entry.isStale()<<std::endl;
+    }
+    std::cout << "CS END -------" << std::endl;
     missCallback(interest);
     return;
   }
