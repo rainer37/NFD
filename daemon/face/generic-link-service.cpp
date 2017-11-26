@@ -267,6 +267,20 @@ GenericLinkService::decodeInterest(const Block& netPkt, const lp::Packet& firstP
 
   // forwarding expects Interest to be created with make_shared
   auto interest = make_shared<Interest>(netPkt);
+  std::cout << "Receiving: "<< interest->getName().toUri() << std::endl;
+  bool isPrivate = false;
+
+  std::string iname = interest->getName().toUri();
+  std::string lastpart = iname.substr(iname.length()-7); 
+  if (lastpart == "private"){
+    isPrivate = true;
+  }
+
+  if (isPrivate) {
+    std::cout << "Private Subname: "<< interest->getName().getSubName(1) << std::endl;
+    interest->setName(iname.substr(0,interest->getName().toUri().length()-10));
+  }
+    std::cout << "Actual IName: "<< interest->getName() << std::endl;
 
   if (firstPkt.has<lp::NextHopFaceIdField>()) {
     if (m_options.allowLocalFields) {
@@ -303,6 +317,10 @@ GenericLinkService::decodeData(const Block& netPkt, const lp::Packet& firstPkt)
   // forwarding expects Data to be created with make_shared
   auto data = make_shared<Data>(netPkt);
 
+  if (data->getName().toUri() == "/hi/app/what") {
+    std::cout << "receiving data: " << data->getName() << std::endl;
+    std::cout << "receiving sig: " << data->getSignature().getSignatureInfo() << std::endl;
+  }
   if (firstPkt.has<lp::NackField>()) {
     ++this->nInNetInvalid;
     NFD_LOG_FACE_WARN("received Nack with Data: DROP");

@@ -79,8 +79,12 @@ Pit::findOrInsert(const Interest& interest, bool allowInsert)
   }
 
   auto entry = make_shared<Entry>(interest);
+  //Entry entry = Entry(interest);
+
   nte->insertPitEntry(entry);
+
   ++m_nItems;
+
   return {entry, true};
 }
 

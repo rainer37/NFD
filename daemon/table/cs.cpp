@@ -28,7 +28,7 @@
 #include "core/asserts.hpp"
 #include "core/logger.hpp"
 #include <ndn-cxx/lp/tags.hpp>
-#include <iostream>
+#include "ptable.hpp"
 
 namespace nfd {
 namespace cs {
@@ -119,6 +119,9 @@ Cs::find(const Interest& interest,
 {
   BOOST_ASSERT(static_cast<bool>(hitCallback));
   BOOST_ASSERT(static_cast<bool>(missCallback));
+
+  Ptable pt;
+  std::cout<<pt.getA()<<std::endl;
 
   const Name& prefix = interest.getName();
   bool isRightmost = interest.getChildSelector() == 1;
