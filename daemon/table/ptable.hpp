@@ -3,16 +3,18 @@
 
 //#include "core/common.hpp"
 #include "ptable_entry.hpp"
+
 #define DEFAULT_PRIVACY_COUNT 1 
+#define DEFAULT_TABLE_SIZE 5
 
 namespace nfd {
 //namespace cs {
 
 class Ptable : noncopyable {
 private:
-	std::set<PEntry> table;
+	PEntry* table;
 	int p_size;
-	int a = 2;
+	int capacity;
 
 public:
 	Ptable();
@@ -36,7 +38,10 @@ public:
 	int get_pcount(std::string name) const;
 
 	// return the PEntry with name
-	PEntry& find_entry(const Name& naem);
+	PEntry* find_entry(const Name& name);
+
+	// decrement the privacy of pentry with name;
+	void dec_count(const Name& name);
 
 };
 //}	// ns cs

@@ -5,7 +5,10 @@ namespace nfd {
 
 
 Ptable::Ptable() {
+	table = new PEntry[DEFAULT_TABLE_SIZE];
+	capacity = DEFAULT_TABLE_SIZE;
 	p_size = 0;
+
 	Name n1 = Name("hello");
 	Name n2 = Name("c++");
 	Name n3 = Name("world");
@@ -21,15 +24,11 @@ Ptable::Ptable() {
 
 bool	
 Ptable::isPrivate(const Name& name) const{
-	if (p_size == 0) return false;
-
-	std::cout<<"CHECKING PRIVACY "<< table.size() <<std::endl;
-	std::set<PEntry>::iterator it;
-	for (it = table.begin(); it != table.end(); it++) {
-		Name target = (*it).getName();
-		std::cout << "?? " << target << std::endl;
-		if (target == name)
-			return true;
+	if(!p_size) return false;
+	for(int i = 0; i<capacity; i++) {
+		if(table[i].isValid() && table[i].getName() == name) {
+			return &table[i];
+		}
 	}
 	return false;
 }
@@ -47,8 +46,28 @@ Ptable::insert(const Name& name){
 
 void 
 Ptable::insert(PEntry pe){
-	table.insert(pe);
+	if(p_size == capacity)
+		p_size = -1;
+	table[p_size] = pe;
 	p_size++;
+}
+
+PEntry*
+Ptable::find_entry(const Name& name){
+	if(!p_size) return NULL;
+	for(int i = 0; i<capacity; i++) {
+		if(table[i].isValid() && table[i].getName() == name) {
+			return &table[i];
+		}
+	}
+	return NULL;
+}
+
+void 
+Ptable::dec_count(const Name& name){
+	PEntry * pe = find_entry(name);
+	if(pe)
+		pe->dec_count();
 }
 
 //}

@@ -2,15 +2,18 @@
 #define NFD_DAEMON_TABLE_PTABLE_MANAGER_HPP
 
 #include "ptable.hpp"
+
 namespace nfd {
-//namespace cs {
 
 class PTManager{
+
 	static PTManager* pt_manager;
-	int count;
 	Ptable p_table;
+
 private:
+
 	PTManager();
+
 public:
 	static PTManager* getInstance() {
 		if(!pt_manager)
@@ -18,16 +21,18 @@ public:
 		return pt_manager;
 	}
 
-	void getA();
-
 	void insert_pentry(const ndn::Name& name);
 
 	void insert_pentry(const ndn::Name& name, int privacy_count);
 
+	PEntry* find_pentry(const Name& name);
+
 	bool isNamePrivate(const ndn::Name& name);
 
+	void dec_privacy_count(const Name& name);
+
+	void remove_entry(const Name& name);
 };
 
-//}
-}
+} // nfd
 #endif

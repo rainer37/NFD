@@ -120,7 +120,7 @@ Cs::find(const Interest& interest,
   BOOST_ASSERT(static_cast<bool>(hitCallback));
   BOOST_ASSERT(static_cast<bool>(missCallback));
 
-  PTManager::getInstance()->getA();
+  //PTManager::getInstance()->getA();
 
   const Name& prefix = interest.getName();
   bool isRightmost = interest.getChildSelector() == 1;

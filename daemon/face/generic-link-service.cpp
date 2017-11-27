@@ -269,7 +269,7 @@ GenericLinkService::decodeInterest(const Block& netPkt, const lp::Packet& firstP
   auto interest = make_shared<Interest>(netPkt);
 
   // NEW_CHANGE
-  PTManager::getInstance()->getA();
+  //PTManager::getInstance()->getA();
   std::cout << "Receiving: "<< interest->getName().toUri() << std::endl;
   bool isPrivate = false;
 
