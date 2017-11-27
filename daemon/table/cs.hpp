@@ -53,8 +53,9 @@
 #include "cs-entry-impl.hpp"
 #include <ndn-cxx/util/signal.hpp>
 #include <boost/iterator/transform_iterator.hpp>
-#include "ptable.hpp"
-#include "ptable_entry.hpp"
+//#include "ptable.hpp"
+//#include "ptable_entry.hpp"
+#include "ptable_manager.hpp"
 
 namespace nfd {
 namespace cs {
@@ -65,7 +66,7 @@ class Cs : noncopyable
 {
 public:
   explicit
-  Cs(size_t nMaxPackets = 10);
+  Cs(size_t nMaxPackets = 2);
 
   /** \brief inserts a Data packet
    */
@@ -181,7 +182,8 @@ private: // find
 
 private:
   Table m_table;
-  Ptable p_table;
+  //Ptable p_table;
+  //PTManager pt_manager;
   unique_ptr<Policy> m_policy;
   ndn::util::signal::ScopedConnection m_beforeEvictConnection;
 };

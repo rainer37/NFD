@@ -6,7 +6,7 @@
 #define DEFAULT_PRIVACY_COUNT 1 
 
 namespace nfd {
-namespace cs {
+//namespace cs {
 
 class Ptable : noncopyable {
 private:
@@ -39,7 +39,7 @@ public:
 	PEntry& find_entry(const Name& naem);
 
 };
-}	// ns cs
+//}	// ns cs
 }   // ns nfd
 
 #endif

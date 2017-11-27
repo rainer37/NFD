@@ -1,6 +1,6 @@
 #include "ptable_entry.hpp"
 namespace nfd {
-namespace cs {
+//namespace cs {
 
 PEntry::PEntry(){
 	m_name = Name();
@@ -26,5 +26,5 @@ PEntry::invalidate_myself(){
 	valid = false;
 }
 
-}
+//}
 }

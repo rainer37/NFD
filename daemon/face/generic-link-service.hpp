@@ -30,6 +30,7 @@
 #include "lp-fragmenter.hpp"
 #include "lp-reassembler.hpp"
 #include "lp-reliability.hpp"
+#include "table/ptable_manager.hpp"
 
 namespace nfd {
 namespace face {
@@ -252,7 +253,6 @@ PROTECTED_WITH_TESTS_ELSE_PRIVATE:
   LpReassembler m_reassembler;
   LpReliability m_reliability;
   lp::Sequence m_lastSeqNo;
-
   friend class LpReliability;
 };
 

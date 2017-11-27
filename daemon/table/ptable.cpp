@@ -1,7 +1,7 @@
 #include "ptable.hpp"
 
 namespace nfd {
-namespace cs {
+//namespace cs {
 
 
 Ptable::Ptable() {
@@ -51,5 +51,5 @@ Ptable::insert(PEntry pe){
 	p_size++;
 }
 
-}
+//}
 }

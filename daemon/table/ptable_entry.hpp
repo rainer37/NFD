@@ -2,7 +2,7 @@
 #define NFD_DAEMON_TABLE_PTABLE_ENTRY_HPP
 
 namespace nfd {
-namespace cs {
+//namespace cs {
 class PEntry {
 private:
 	Name m_name;
@@ -31,7 +31,7 @@ public:
 	bool operator<(const PEntry& other) const;
 };
 
-}
+//}
 }
 
 #endif
