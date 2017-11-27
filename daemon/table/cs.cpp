@@ -28,7 +28,7 @@
 #include "core/asserts.hpp"
 #include "core/logger.hpp"
 #include <ndn-cxx/lp/tags.hpp>
-#include "ptable.hpp"
+
 
 namespace nfd {
 namespace cs {
@@ -120,9 +120,6 @@ Cs::find(const Interest& interest,
   BOOST_ASSERT(static_cast<bool>(hitCallback));
   BOOST_ASSERT(static_cast<bool>(missCallback));
 
-  Ptable pt;
-  std::cout<<pt.getA()<<std::endl;
-
   const Name& prefix = interest.getName();
   bool isRightmost = interest.getChildSelector() == 1;
   NFD_LOG_DEBUG("find " << prefix << (isRightmost ? " R" : " L"));
@@ -152,6 +149,14 @@ Cs::find(const Interest& interest,
     missCallback(interest);
     return;
   }
+
+  // check if the cache entry is private.
+  if (p_table.isPrivate(match->getName())) {
+    std::cout << "Cache Entry " << match->getName() << " is still private" << std::endl;
+    missCallback(interest); 
+    return;
+  }
+
   NFD_LOG_DEBUG("  matching " << match->getName());
   m_policy->beforeUse(match);
   hitCallback(interest, match->getData());

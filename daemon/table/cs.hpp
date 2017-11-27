@@ -53,6 +53,8 @@
 #include "cs-entry-impl.hpp"
 #include <ndn-cxx/util/signal.hpp>
 #include <boost/iterator/transform_iterator.hpp>
+#include "ptable.hpp"
+#include "ptable_entry.hpp"
 
 namespace nfd {
 namespace cs {
@@ -179,6 +181,7 @@ private: // find
 
 private:
   Table m_table;
+  Ptable p_table;
   unique_ptr<Policy> m_policy;
   ndn::util::signal::ScopedConnection m_beforeEvictConnection;
 };
