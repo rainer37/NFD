@@ -1,7 +1,6 @@
 #ifndef NFD_DAEMON_TABLE_PTABLE_HPP
 #define NFD_DAEMON_TABLE_PTABLE_HPP
 
-//#include "core/common.hpp"
 #include "ptable_entry.hpp"
 
 #define DEFAULT_PRIVACY_COUNT 1 
@@ -13,14 +12,15 @@ namespace nfd {
 class Ptable : noncopyable {
 private:
 	PEntry* table;
-	int p_size;
 	int capacity;
-
+	int next;
 public:
 	Ptable();
 
 	// insert PEntry with DEFAULT_PRIVACY_COUNT
 	void insert(const Name& name);
+
+	void insert(std::string name);
 
 	// insert PEntry with provided privacy sount;
 	void insert(const Name& name, int privacy_count);
@@ -29,7 +29,7 @@ public:
 	void insert(PEntry pe);
 
 	// check if the PEntry with name has privacy_count bigger than 0
-	bool isPrivate(const Name& name) const;
+	bool isPrivate(const Name& name);
 
 	// return the privacy count of PEntry with name
 	int get_pcount(const Name& name) const;
@@ -43,8 +43,10 @@ public:
 	// decrement the privacy of pentry with name;
 	void dec_count(const Name& name);
 
+	// print the content of table;
+	void print();
+
 };
-//}	// ns cs
 }   // ns nfd
 
 #endif

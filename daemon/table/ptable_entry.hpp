@@ -30,7 +30,10 @@ public:
 	bool isValid() { return valid; }
 
 	// decrement the privacy count;
-	void dec_count() { pri_count--; }
+	void dec_count() { 
+		std::cout << "Called lah" << std::endl;
+		pri_count--; 
+	}
 
 	bool operator<(const PEntry& other) const;
 };

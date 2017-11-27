@@ -111,17 +111,6 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
     const_cast<Interest&>(interest).setForwardingHint({});
   }
 
-  //Interest i = make_shared<Interest>(interest);
-  // check if the interest requires privacy concerns
-  Name priName = Name("/private/");
-  bool isPrivate = priName.isPrefixOf(interest.getName());
-  if (isPrivate) {
-    //std::cout << "Private: " << interest.getName() << std::endl;
-    //std::cout << "New Name: " << interest.getName().getSubName(1) << std::endl;
-  } else {
-    //std::cout << "Non-Private: " << interest.getName() << std::endl;
-  }
-
   // PIT insert
   shared_ptr<pit::Entry> pitEntry = m_pit.insert(interest).first;
 

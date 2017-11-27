@@ -269,8 +269,7 @@ GenericLinkService::decodeInterest(const Block& netPkt, const lp::Packet& firstP
   auto interest = make_shared<Interest>(netPkt);
 
   // NEW_CHANGE
-  //PTManager::getInstance()->getA();
-  std::cout << "Receiving: "<< interest->getName().toUri() << std::endl;
+  // std::cout << "Receiving: "<< interest->getName().toUri() << std::endl;
   bool isPrivate = false;
 
   std::string iname = interest->getName().toUri();
@@ -283,9 +282,10 @@ GenericLinkService::decodeInterest(const Block& netPkt, const lp::Packet& firstP
     std::cout << "Private Subname: "<< interest->getName().getSubName(1) << std::endl;
     interest->setName(iname.substr(0,interest->getName().toUri().length()-10));
     std::cout << "PTABLE Insert: "<< interest->getName() << std::endl;
-    //p_table.insert(interest.getName());
+    PTManager::getInstance()->insert_pentry(interest->getName());
+    //PTManager::getInstance()->print_table();
   }
-    std::cout << "Actual IName: "<< interest->getName() << std::endl;
+    //std::cout << "Actual IName: "<< interest->getName() << std::endl;
 
   // CHANGE_NEW
 

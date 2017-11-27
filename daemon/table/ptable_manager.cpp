@@ -14,6 +14,12 @@ PTManager::insert_pentry(const Name& name){
 }
 
 void 
+PTManager::insert_pentry(std::string name){
+	p_table.insert(name);
+}
+
+
+void 
 PTManager::insert_pentry(const Name& name, int privacy_count){
 	p_table.insert(name, privacy_count);
 }
@@ -31,6 +37,11 @@ PTManager::dec_privacy_count(const Name& name){
 PEntry*
 PTManager::find_pentry(const Name& name){
 	return p_table.find_entry(name);
+}
+
+void
+PTManager::print_table() {
+	p_table.print();
 }
 
 }

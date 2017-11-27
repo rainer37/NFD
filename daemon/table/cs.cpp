@@ -142,23 +142,25 @@ Cs::find(const Interest& interest,
 
   if (match == last) {
     NFD_LOG_DEBUG("  no-match");
-    std::cout << "Content Store Start" << std::endl;
-    for (const EntryImpl& entry : m_table) {
-    if(!entry.isStale())
-        std::cout<<entry.getFullName()<<" "<< entry.isStale()<<std::endl;
-    }
-    std::cout << "CS END -------" << std::endl;
+    // std::cout << "Content Store Start" << std::endl;
+    // for (const EntryImpl& entry : m_table) {
+    // if(!entry.isStale())
+    //     std::cout<<entry.getFullName()<<" "<< entry.isStale()<<std::endl;
+    // }
+    // std::cout << "CS END -------" << std::endl;
     missCallback(interest);
     return;
   }
 
   // NEW CHANGE
   // check if the cache entry is private.
-  // if (p_table.isPrivate(match->getName())) {
-  //   std::cout << "Cache Entry " << match->getName() << " is still private" << std::endl;
-  //   missCallback(interest); 
-  //   return;
-  // }
+  if (PTManager::getInstance()->isNamePrivate(match->getName())) {
+    PTManager::getInstance()->dec_privacy_count(match->getName());
+    PTManager::getInstance()->print_table();
+    std::cout << "Cache Entry " << match->getName() << " is still private" << std::endl;
+    missCallback(interest); 
+    return;
+  }
   // CHANGE NEW
 
   NFD_LOG_DEBUG("  matching " << match->getName());
