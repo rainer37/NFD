@@ -7,6 +7,7 @@ class PEntry {
 private:
 	Name m_name;
 	int pri_count;
+	std::string m_nonce;
 	bool valid;
 
 public:
@@ -29,6 +30,9 @@ public:
 	// check if valid;
 	bool isValid() { return valid; }
 
+	std::string getNonce() {
+		return m_nonce;
+	}
 	// decrement the privacy count;
 	void dec_count() { 
 		std::cout << "Called lah" << std::endl;

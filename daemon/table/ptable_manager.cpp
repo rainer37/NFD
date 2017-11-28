@@ -9,18 +9,17 @@ PTManager::PTManager(){
 }
 
 void 
-PTManager::insert_pentry(const Name& name){
+PTManager::insert_pentry(const Name& name, std::string nonce){
 	p_table.insert(name);
 }
 
 void 
-PTManager::insert_pentry(std::string name){
+PTManager::insert_pentry(std::string name, std::string nonce){
 	p_table.insert(name);
 }
 
-
 void 
-PTManager::insert_pentry(const Name& name, int privacy_count){
+PTManager::insert_pentry(const Name& name, int privacy_count, std::string nonce){
 	p_table.insert(name, privacy_count);
 }
 

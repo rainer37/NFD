@@ -6,15 +6,6 @@ Ptable::Ptable() {
 	table = new PEntry[DEFAULT_TABLE_SIZE];
 	capacity = DEFAULT_TABLE_SIZE;
 	next = 0;
-	Name n1 = Name("hello");
-	Name n3 = Name("world");
-	insert(n1);
-	insert(n3);
-	if(isPrivate(n1)){
-		std::cout<<"HIT"<<std::endl;
-	} else {
-		std::cout<<"MISS"<<std::endl;		
-	}
 }
 
 bool	

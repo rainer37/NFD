@@ -271,22 +271,28 @@ GenericLinkService::decodeInterest(const Block& netPkt, const lp::Packet& firstP
   // NEW_CHANGE
   // std::cout << "Receiving: "<< interest->getName().toUri() << std::endl;
   bool isPrivate = false;
+  std::string nonce = "";
 
   std::string iname = interest->getName().toUri();
-  std::string lastpart = iname.substr(iname.length()-7); 
-  if (lastpart == "private"){
-    isPrivate = true;
-  }
+  int pos = iname.find("%24"); // find the $ sign in name.
+  if(pos != -1){
+    std::cout<< "Before $ " << iname.substr(0, pos) << std::endl;
+    std::string lastpart = iname.substr(pos+3); 
+    std::cout<< "Last part " << lastpart << std::endl;
 
+    if (lastpart.substr(0,7) == "private"){
+      isPrivate = true;
+      std::cout<< "Last part + pos " << lastpart.find("+") << std::endl;
+      std::cout<< "nonce " << lastpart.substr(lastpart.find("+")+1) << std::endl;
+   }
+  }
   if (isPrivate) {
-    std::cout << "Private Subname: "<< interest->getName().getSubName(1) << std::endl;
-    interest->setName(iname.substr(0,interest->getName().toUri().length()-10));
-    std::cout << "PTABLE Insert: "<< interest->getName() << std::endl;
-    PTManager::getInstance()->insert_pentry(interest->getName());
+    interest->setName(iname.substr(0,pos));
+    PTManager::getInstance()->insert_pentry(interest->getName(),nonce);
+    std::cout << "Private Subname: "<< interest->getName() << std::endl;
+
     //PTManager::getInstance()->print_table();
   }
-    //std::cout << "Actual IName: "<< interest->getName() << std::endl;
-
   // CHANGE_NEW
 
   if (firstPkt.has<lp::NextHopFaceIdField>()) {

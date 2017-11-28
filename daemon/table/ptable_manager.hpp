@@ -23,11 +23,11 @@ public:
 	}
 
 	// insert PEntry.
-	void insert_pentry(const ndn::Name& name);
+	void insert_pentry(const ndn::Name& name, std::string nonce);
 
-	void insert_pentry(std::string name);
+	void insert_pentry(std::string name, std::string nonce);
 
-	void insert_pentry(const ndn::Name& name, int privacy_count);
+	void insert_pentry(const ndn::Name& name, int privacy_count, std::string nonce);
 
 	// return the PEntry with matching name
 	PEntry* find_pentry(const Name& name);
@@ -43,6 +43,9 @@ public:
 
 	// print the content of the tabel;
 	void print_table();
+
+	// invalidate the pentry when the cache line has been evicted.
+	void invalidate_pentry(const Name& name);
 };
 
 } // nfd

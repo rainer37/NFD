@@ -46,6 +46,9 @@ public:
 	// print the content of table;
 	void print();
 
+	// invalidate the entry with name;
+	void invalidate(const Name& name);
+
 };
 }   // ns nfd
 
