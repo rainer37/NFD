@@ -16,7 +16,7 @@ public:
 	PEntry();
 
 	// construct entry from a name and desired privacy count;
-	PEntry(const Name& name, int init_count = 1);
+	PEntry(const Name& name, int init_count = 1, std::string nonce = "");
 
 	// turn the entry into invalid;
 	void invalidate_myself();

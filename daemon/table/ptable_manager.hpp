@@ -8,6 +8,7 @@ namespace nfd {
 class PTManager{
 
 	static PTManager* pt_manager;
+	std::vector<std::string> history_list(); 
 	Ptable p_table;
 
 private:
@@ -30,13 +31,10 @@ public:
 	void insert_pentry(const ndn::Name& name, int privacy_count, std::string nonce);
 
 	// return the PEntry with matching name
-	PEntry* find_pentry(const Name& name);
+	PEntry* find_pentry(const Name& name, std::string nonce);
 
 	// check if the name is in table and is private.
-	bool isNamePrivate(const ndn::Name& name);
-
-	// decrement the private count of the name in table.
-	void dec_privacy_count(const Name& name);
+	bool isNamePrivate(const ndn::Name& name, std::string nonce);
 
 	// remove entry with name.
 	void remove_entry(const Name& name);
@@ -46,6 +44,10 @@ public:
 
 	// invalidate the pentry when the cache line has been evicted.
 	void invalidate_pentry(const Name& name);
+
+	bool wasPrivate(const Name& name);
+
+	void invalidate_all(const Name& name);
 };
 
 } // nfd

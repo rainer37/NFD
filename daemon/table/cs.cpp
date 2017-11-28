@@ -154,13 +154,15 @@ Cs::find(const Interest& interest,
 
   // NEW CHANGE
   // check if the cache entry is private.
-  if (PTManager::getInstance()->isNamePrivate(match->getName())) {
-    PTManager::getInstance()->dec_privacy_count(match->getName());
-    PTManager::getInstance()->print_table();
-    std::cout << "Cache Entry " << match->getName() << " is still private" << std::endl;
-    missCallback(interest); 
-    return;
-  }
+  // if (PTManager::getInstance()->isNamePrivate(match->getName())) {
+  //   //PTManager::getInstance()->dec_privacy_count(match->getName());
+  //   PTManager::getInstance()->print_table();
+  //   PTManager::getInstance()->invalidate_all(match->getName());
+  //   PTManager::getInstance()->print_table();
+  //   std::cout << "Cache Entry " << match->getName() << " is still private" << std::endl;
+  //   missCallback(interest); 
+  //   return;
+  // }
   // CHANGE NEW
 
   NFD_LOG_DEBUG("  matching " << match->getName());

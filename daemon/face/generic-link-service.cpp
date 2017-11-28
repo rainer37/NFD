@@ -282,8 +282,8 @@ GenericLinkService::decodeInterest(const Block& netPkt, const lp::Packet& firstP
 
     if (lastpart.substr(0,7) == "private"){
       isPrivate = true;
-      std::cout<< "Last part + pos " << lastpart.find("+") << std::endl;
-      std::cout<< "nonce " << lastpart.substr(lastpart.find("+")+1) << std::endl;
+      nonce = lastpart.substr(lastpart.find("+")+1);
+      std::cout<< "nonce " << nonce << std::endl;
    }
   }
   if (isPrivate) {
@@ -291,7 +291,7 @@ GenericLinkService::decodeInterest(const Block& netPkt, const lp::Packet& firstP
     PTManager::getInstance()->insert_pentry(interest->getName(),nonce);
     std::cout << "Private Subname: "<< interest->getName() << std::endl;
 
-    //PTManager::getInstance()->print_table();
+    PTManager::getInstance()->print_table();
   }
   // CHANGE_NEW
 

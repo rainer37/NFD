@@ -6,12 +6,14 @@ PEntry::PEntry(){
 	m_name = Name();
 	pri_count = 0;
 	valid = false;
+	m_nonce = "";
 }
 
-PEntry::PEntry(const Name& name, int init_count){
+PEntry::PEntry(const Name& name, int init_count, std::string nonce){
 	m_name = name;
 	pri_count = init_count;
 	valid = true;
+	m_nonce = nonce;
 }
 
 bool 
