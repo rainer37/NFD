@@ -1,6 +1,12 @@
 #ifndef NFD_DAEMON_TABLE_PTABLE_MANAGER_HPP
 #define NFD_DAEMON_TABLE_PTABLE_MANAGER_HPP
+/*
+	Singleton Class Private Table Manager.
+	Manage Private Table defined in Ptable class, and advanced control.
+	keep current request states as <isPrivate, nonce> pair.
 
+	PTManager will also check for the history access of contents in CS.
+*/
 #include "ptable.hpp"
 
 namespace nfd {
@@ -24,12 +30,16 @@ public:
 		return pt_manager;
 	}
 
+	// return true if is a private request
 	bool amIPrivate() { return last_pair.first; }
 
+	// return the nonce within the private request
 	std::string getMyNonce() { return last_pair.second; }
 
+	// set states
 	void setLastPair(bool privacy, std::string nonce) { last_pair.first = privacy; last_pair.second = nonce; }
 
+	// reset states
 	void resetLastPair() { last_pair.first = false; last_pair.second = ""; }
 
 	// check if there are other pentry with same name but different nonce.
@@ -62,10 +72,13 @@ public:
 
 	bool wasPrivate(const Name& name);
 
+	// invalidate all the pentry with given name.
 	void invalidate_all(const Name& name);
 
+	// set pentry with name and nonce as delayed.
 	void setDelayed(const Name& name, std::string nonce, bool delayed);
 
+	// check if pentry with name and nonce has delayed.
 	bool hasDelayed(const Name& name, std::string nonce);
 };
 

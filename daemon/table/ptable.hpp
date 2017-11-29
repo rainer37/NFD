@@ -12,8 +12,8 @@ namespace nfd {
 class Ptable : noncopyable {
 private:
 	PEntry* table;
-	int capacity;
-	int next;
+	int capacity; // size of table
+
 public:
 	Ptable();
 
@@ -56,10 +56,13 @@ public:
 
 	int size();
 
+	// check if there are pentry with same given name but different nonce.
 	bool find_name_with_diff_nonce(const Name& name, std::string nonce);
 
+	// set the pentry with given name and nonce as delayed.
 	void setDelayed(const Name& name, std::string nonce, bool delayed);
 
+	// check is the pentry with given name and nonce has delayed.
 	bool hasDelayed(const Name& name, std::string nonce);
 };
 }   // ns nfd

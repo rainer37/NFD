@@ -126,29 +126,48 @@ Cs::find(const Interest& interest,
   NFD_LOG_DEBUG("find " << prefix << (isRightmost ? " R" : " L"));
 
   // NEW CHANGE
-  // check if the cache entry is private.
+  // ignore reserved localhost command.
   if(!Name("/localhost").isPrefixOf(prefix)){
 
+  // check if it is a private request.
   if(ptm->amIPrivate()){
     std::string myNonce = ptm->getMyNonce();
     std::cout<<"I'm private request, my nonce is "<< myNonce << std::endl;
-  // PTManager::getInstance()->print_table();
+
+    // If it's a private request, check if there are peer pentry with the same name in the ptable.
+    // if there is any peer pentries, this request should be delayed for once.
+    // since if it doesn't, the privacy of peer is leaked.
     if (ptm->peer_check(prefix, myNonce)) {
       std::cout <<"I found myself is in ptable with peer" << std::endl;
+
+      // Then check if i have been delayed once for any peers.
+      // if yes, that means this time the request does not have to delay anymore.
+      // since the previous request could be cached by at least once.
       if (ptm->hasDelayed(prefix, myNonce)) {
         std::cout <<"but i have delayed for others, proceed as normal" << std::endl;
-      } else {
+      } 
+
+      // If not, then this request would have to delay once to protect the privacy of peers.
+      else {
         std::cout <<"but i'm first time here, delay once" << std::endl;
         ptm->resetLastPair();
         ptm->setDelayed(prefix, myNonce, true);
         missCallback(interest);
         return;
       }
-    } else {
+    } 
+
+    // If there is no peer pentries with the given name.
+    // this request becomes the first one, and does not have to consider for others.
+    else {
       std::cout <<"I found myself is peerless in ptable, proceed as normal" << std::endl;
       ptm->setDelayed(prefix, myNonce, true);
     }
-  } else {
+  } 
+
+  // if it's not a private request, then any pentries in ptable should be invalidated.
+  // The invalidation marks this name as being publicly accessed, so no delay is require anymore.
+  else {
     std::cout<<interest.getName()<<" is not private" << std::endl;
     if (ptm->isNamePrivate(prefix)){
       std::cout<<"There are private entry of my name in ptable, delay once, invalidate all" << std::endl;
@@ -182,12 +201,6 @@ Cs::find(const Interest& interest,
 
   if (match == last) {
     NFD_LOG_DEBUG("  no-match");
-    // std::cout << "Content Store Start" << std::endl;
-    // for (const EntryImpl& entry : m_table) {
-    // if(!entry.isStale())
-    //     std::cout<<entry.getFullName()<<" "<< entry.isStale()<<std::endl;
-    // }
-    // std::cout << "CS END -------" << std::endl;
     missCallback(interest);
     return;
   }

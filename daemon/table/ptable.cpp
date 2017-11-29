@@ -5,7 +5,6 @@ namespace nfd {
 Ptable::Ptable() {
 	table = new PEntry[DEFAULT_TABLE_SIZE];
 	capacity = DEFAULT_TABLE_SIZE;
-	next = 0;
 	srand (std::time(NULL));
 }
 

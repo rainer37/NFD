@@ -269,30 +269,28 @@ GenericLinkService::decodeInterest(const Block& netPkt, const lp::Packet& firstP
   auto interest = make_shared<Interest>(netPkt);
 
   // NEW_CHANGE
-  // std::cout << "Receiving: "<< interest->getName().toUri() << std::endl;
   bool isPrivate = false;
   std::string nonce = "";
-
   std::string iname = interest->getName().toUri();
   int pos = iname.find("%24"); // find the $ sign in name.
-  if(pos != -1){
-    //std::cout<< "Before $ " << iname.substr(0, pos) << std::endl;
-    std::string lastpart = iname.substr(pos+3); 
-    //std::cout<< "Last part " << lastpart << std::endl;
 
+  // check if the interest has a private name in format. ex. /hello/world$private+123
+  if(pos != -1){
+    std::string lastpart = iname.substr(pos+3); 
+
+    // if it's private, get nonce from it.
     if (lastpart.substr(0,7) == "private"){
       isPrivate = true;
       nonce = lastpart.substr(lastpart.find("+")+1);
-      //std::cout<< "nonce " << nonce << std::endl;
    }
   }
   if (isPrivate) {
     interest->setName(iname.substr(0,pos));
+
+    // insert a new pentry into ptable is there isn't one in it.
+    // otherwise, nothing happens.
     PTManager::getInstance()->insert_pentry(interest->getName(),nonce);
     PTManager::getInstance()->setLastPair(true, nonce);
-    //std::cout << "Private Subname: "<< interest->getName() << std::endl;
-
-    //PTManager::getInstance()->print_table();
   }
   // CHANGE_NEW
 

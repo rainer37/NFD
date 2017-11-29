@@ -4,9 +4,7 @@ namespace nfd {
 
 PTManager* PTManager::pt_manager = 0;
 
-PTManager::PTManager(){
-	//std::cout<<"PTable Manager Created..."<<std::endl;
-}
+PTManager::PTManager(){}
 
 void 
 PTManager::insert_pentry(const Name& name, std::string nonce){
