@@ -10,6 +10,7 @@ class PTManager{
 	static PTManager* pt_manager;
 	std::vector<std::string> history_list(); 
 	Ptable p_table;
+	std::pair<bool, std::string> last_pair;
 
 private:
 
@@ -23,6 +24,15 @@ public:
 		return pt_manager;
 	}
 
+	bool amIPrivate() { return last_pair.first; }
+
+	std::string getMyNonce() { return last_pair.second; }
+
+	void setLastPair(bool privacy, std::string nonce) { last_pair.first = privacy; last_pair.second = nonce; }
+
+	void resetLastPair() { last_pair.first = false; last_pair.second = ""; }
+
+	bool peer_check(const Name& name, std::string nonce);
 	// insert PEntry.
 	void insert_pentry(const ndn::Name& name, std::string nonce);
 
@@ -33,8 +43,11 @@ public:
 	// return the PEntry with matching name
 	PEntry* find_pentry(const Name& name, std::string nonce);
 
-	// check if the name is in table and is private.
+	// check if the name is in table and is private with matching nonce.
 	bool isNamePrivate(const ndn::Name& name, std::string nonce);
+
+	// check if only the name is in table and is private.
+	bool isNamePrivate(const ndn::Name& name);
 
 	// remove entry with name.
 	void remove_entry(const Name& name);

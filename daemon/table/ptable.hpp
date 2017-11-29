@@ -31,6 +31,9 @@ public:
 	// check if the PEntry with name has privacy_count bigger than 0
 	bool isPrivate(const Name& name, std::string nonce);
 
+	// check if the PEntry with name has privacy_count bigger than 0 with matching nonce
+	bool isPrivate(const Name& name);
+
 	// return the privacy count of PEntry with name
 	int get_pcount(const Name& name) const;
 
@@ -39,6 +42,9 @@ public:
 
 	// return the PEntry with name
 	PEntry* find_entry(const Name& name, std::string nonce);
+
+	// return the PEntry with name
+	PEntry* find_entry(const Name& name);
 
 	// print the content of table;
 	void print();
@@ -49,6 +55,8 @@ public:
 	PEntry* get(int index);
 
 	int size();
+
+	bool find_name_with_diff_nonce(const Name& name, std::string nonce);
 };
 }   // ns nfd
 

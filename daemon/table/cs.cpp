@@ -47,6 +47,7 @@ makeDefaultPolicy()
 Cs::Cs(size_t nMaxPackets)
 {
   this->setPolicyImpl(makeDefaultPolicy());
+  ptm = PTManager::getInstance();
   m_policy->setLimit(nMaxPackets);
 }
 
@@ -126,6 +127,36 @@ Cs::find(const Interest& interest,
   bool isRightmost = interest.getChildSelector() == 1;
   NFD_LOG_DEBUG("find " << prefix << (isRightmost ? " R" : " L"));
 
+  // NEW CHANGE
+  // check if the cache entry is private.
+  if(ptm->amIPrivate()){
+    // std::cout<<interest.getName()<<" is private, delay once" << std::endl;
+    std::cout<<"I'm private request, my nonce is "<< ptm->getMyNonce() << std::endl;
+  // PTManager::getInstance()->print_table();
+    if (ptm->peer_check(prefix, ptm->getMyNonce())) {
+      std::cout <<"I found myself is in ptable with peer, delay once" << std::endl;
+    } else {
+      std::cout <<"I found myself is peerless in ptable, proceed as normal" << std::endl;
+    }
+  //   PTManager::getInstance()->print_table();
+  //   std::cout << "Cache Entry " << match->getName() << " is still private" << std::endl;
+  //   missCallback(interest);
+  //   return;
+  } else {
+    std::cout<<interest.getName()<<" is not private" << std::endl;
+    if (ptm->isNamePrivate(prefix)){
+      std::cout<<"There are private entry of my name in ptable, delay once, invalidate all" << std::endl;
+      ptm->invalidate_all(prefix);
+      ptm->resetLastPair();
+      missCallback(interest);
+      return;
+    } else {
+      std::cout<<"There is not private entry of my name in ptable, proceed as normal" << std::endl;
+    }
+  }
+  ptm->resetLastPair();
+  // CHANGE NEW
+
   iterator first = m_table.lower_bound(prefix);
   iterator last = m_table.end();
   if (prefix.size() > 0) {
@@ -151,19 +182,6 @@ Cs::find(const Interest& interest,
     missCallback(interest);
     return;
   }
-
-  // NEW CHANGE
-  // check if the cache entry is private.
-  // if (PTManager::getInstance()->isNamePrivate(match->getName())) {
-  //   //PTManager::getInstance()->dec_privacy_count(match->getName());
-  //   PTManager::getInstance()->print_table();
-  //   PTManager::getInstance()->invalidate_all(match->getName());
-  //   PTManager::getInstance()->print_table();
-  //   std::cout << "Cache Entry " << match->getName() << " is still private" << std::endl;
-  //   missCallback(interest); 
-  //   return;
-  // }
-  // CHANGE NEW
 
   NFD_LOG_DEBUG("  matching " << match->getName());
   m_policy->beforeUse(match);

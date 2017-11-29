@@ -276,22 +276,23 @@ GenericLinkService::decodeInterest(const Block& netPkt, const lp::Packet& firstP
   std::string iname = interest->getName().toUri();
   int pos = iname.find("%24"); // find the $ sign in name.
   if(pos != -1){
-    std::cout<< "Before $ " << iname.substr(0, pos) << std::endl;
+    //std::cout<< "Before $ " << iname.substr(0, pos) << std::endl;
     std::string lastpart = iname.substr(pos+3); 
-    std::cout<< "Last part " << lastpart << std::endl;
+    //std::cout<< "Last part " << lastpart << std::endl;
 
     if (lastpart.substr(0,7) == "private"){
       isPrivate = true;
       nonce = lastpart.substr(lastpart.find("+")+1);
-      std::cout<< "nonce " << nonce << std::endl;
+      //std::cout<< "nonce " << nonce << std::endl;
    }
   }
   if (isPrivate) {
     interest->setName(iname.substr(0,pos));
     PTManager::getInstance()->insert_pentry(interest->getName(),nonce);
-    std::cout << "Private Subname: "<< interest->getName() << std::endl;
+    PTManager::getInstance()->setLastPair(true, nonce);
+    //std::cout << "Private Subname: "<< interest->getName() << std::endl;
 
-    PTManager::getInstance()->print_table();
+    //PTManager::getInstance()->print_table();
   }
   // CHANGE_NEW
 
@@ -331,7 +332,7 @@ GenericLinkService::decodeData(const Block& netPkt, const lp::Packet& firstPkt)
   auto data = make_shared<Data>(netPkt);
 
   if (data->getName().toUri() == "/hi/app/what") {
-    std::cout << "receiving data: " << data->getName() << std::endl;
+    // std::cout << "receiving data: " << data->getName() << std::endl;
   }
 
   if (firstPkt.has<lp::NackField>()) {

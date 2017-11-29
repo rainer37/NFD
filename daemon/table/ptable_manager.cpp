@@ -5,7 +5,7 @@ namespace nfd {
 PTManager* PTManager::pt_manager = 0;
 
 PTManager::PTManager(){
-	std::cout<<"PTable Manager Created..."<<std::endl;
+	//std::cout<<"PTable Manager Created..."<<std::endl;
 }
 
 void 
@@ -28,6 +28,11 @@ PTManager::isNamePrivate(const Name& name, std::string nonce){
 	return p_table.isPrivate(name, nonce);
 }
 
+bool
+PTManager::isNamePrivate(const Name& name){
+	return p_table.isPrivate(name);
+}
+
 PEntry*
 PTManager::find_pentry(const Name& name, std::string nonce){
 	return p_table.find_entry(name, nonce);
@@ -46,5 +51,11 @@ PTManager::invalidate_all(const Name& name){
 			pe->invalidate_myself();
 	}
 }
+
+bool 
+PTManager::peer_check(const Name& name, std::string nonce){
+	return p_table.find_name_with_diff_nonce(name, nonce);
+}
+
 
 }
