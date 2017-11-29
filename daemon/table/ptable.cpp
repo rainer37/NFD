@@ -83,10 +83,8 @@ void
 Ptable::print() {
 	std::cout<<"		Ptable Start:"<<std::endl;
 	for(int i = 0; i<capacity; i++) {
-		//if(table[i].get_pri_count() !=0) {
-			std::cout<<table[i].getName() << "		" << table[i].get_pri_count() << " " << table[i].isValid() << " "
-			<< table[i].getNonce() << std::endl;;
-		//}
+		std::cout<< "		" <<table[i].getName() << " " << table[i].get_pri_count() << " " << table[i].isValid() << " "
+		<< table[i].getNonce() << std::endl;;
 	}
 	std::cout<<"		Ptable End:"<<std::endl;
 }
@@ -110,6 +108,16 @@ Ptable::find_name_with_diff_nonce(const Name& name, std::string nonce){
 		}
 	}
 	return false;
+}
+
+void 
+Ptable::setDelayed(const Name& name, std::string nonce, bool delayed){
+	find_entry(name,nonce)->setDelayed(delayed);
+}
+
+bool 
+Ptable::hasDelayed(const Name& name, std::string nonce){
+	return find_entry(name,nonce)->isDelayed();
 }
 
 }

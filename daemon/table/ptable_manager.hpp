@@ -10,7 +10,7 @@ class PTManager{
 	static PTManager* pt_manager;
 	std::vector<std::string> history_list(); 
 	Ptable p_table;
-	std::pair<bool, std::string> last_pair;
+	std::pair<bool, std::string> last_pair; // current state info.
 
 private:
 
@@ -32,7 +32,9 @@ public:
 
 	void resetLastPair() { last_pair.first = false; last_pair.second = ""; }
 
+	// check if there are other pentry with same name but different nonce.
 	bool peer_check(const Name& name, std::string nonce);
+
 	// insert PEntry.
 	void insert_pentry(const ndn::Name& name, std::string nonce);
 
@@ -61,6 +63,10 @@ public:
 	bool wasPrivate(const Name& name);
 
 	void invalidate_all(const Name& name);
+
+	void setDelayed(const Name& name, std::string nonce, bool delayed);
+
+	bool hasDelayed(const Name& name, std::string nonce);
 };
 
 } // nfd

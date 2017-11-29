@@ -57,5 +57,14 @@ PTManager::peer_check(const Name& name, std::string nonce){
 	return p_table.find_name_with_diff_nonce(name, nonce);
 }
 
+void 
+PTManager::setDelayed(const Name& name, std::string nonce, bool delayed){
+	p_table.setDelayed(name, nonce, delayed);
+}
+
+bool 
+PTManager::hasDelayed(const Name& name, std::string nonce){
+	return p_table.hasDelayed(name, nonce);
+}
 
 }

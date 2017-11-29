@@ -9,6 +9,7 @@ private:
 	int pri_count;
 	std::string m_nonce;
 	bool valid;
+	bool delayed;
 
 public:
 
@@ -29,6 +30,11 @@ public:
 
 	// check if valid;
 	bool isValid() { return valid; }
+
+	// check if i have been delayed for peers.
+	bool isDelayed() { return delayed; }
+
+	void setDelayed(bool delay) { delayed = delay; }
 
 	std::string getNonce() {
 		return m_nonce;

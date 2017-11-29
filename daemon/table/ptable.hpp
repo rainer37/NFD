@@ -57,6 +57,10 @@ public:
 	int size();
 
 	bool find_name_with_diff_nonce(const Name& name, std::string nonce);
+
+	void setDelayed(const Name& name, std::string nonce, bool delayed);
+
+	bool hasDelayed(const Name& name, std::string nonce);
 };
 }   // ns nfd
 

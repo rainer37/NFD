@@ -7,6 +7,7 @@ PEntry::PEntry(){
 	pri_count = 0;
 	valid = false;
 	m_nonce = "";
+	delayed = false;
 }
 
 PEntry::PEntry(const Name& name, int init_count, std::string nonce){
@@ -14,6 +15,7 @@ PEntry::PEntry(const Name& name, int init_count, std::string nonce){
 	pri_count = init_count;
 	valid = true;
 	m_nonce = nonce;
+	delayed = false;
 }
 
 bool 

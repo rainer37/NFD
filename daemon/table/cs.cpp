@@ -121,40 +121,49 @@ Cs::find(const Interest& interest,
   BOOST_ASSERT(static_cast<bool>(hitCallback));
   BOOST_ASSERT(static_cast<bool>(missCallback));
 
-  //PTManager::getInstance()->getA();
-
   const Name& prefix = interest.getName();
   bool isRightmost = interest.getChildSelector() == 1;
   NFD_LOG_DEBUG("find " << prefix << (isRightmost ? " R" : " L"));
 
   // NEW CHANGE
   // check if the cache entry is private.
+  if(!Name("/localhost").isPrefixOf(prefix)){
+
   if(ptm->amIPrivate()){
-    // std::cout<<interest.getName()<<" is private, delay once" << std::endl;
-    std::cout<<"I'm private request, my nonce is "<< ptm->getMyNonce() << std::endl;
+    std::string myNonce = ptm->getMyNonce();
+    std::cout<<"I'm private request, my nonce is "<< myNonce << std::endl;
   // PTManager::getInstance()->print_table();
-    if (ptm->peer_check(prefix, ptm->getMyNonce())) {
-      std::cout <<"I found myself is in ptable with peer, delay once" << std::endl;
+    if (ptm->peer_check(prefix, myNonce)) {
+      std::cout <<"I found myself is in ptable with peer" << std::endl;
+      if (ptm->hasDelayed(prefix, myNonce)) {
+        std::cout <<"but i have delayed for others, proceed as normal" << std::endl;
+      } else {
+        std::cout <<"but i'm first time here, delay once" << std::endl;
+        ptm->resetLastPair();
+        ptm->setDelayed(prefix, myNonce, true);
+        missCallback(interest);
+        return;
+      }
     } else {
       std::cout <<"I found myself is peerless in ptable, proceed as normal" << std::endl;
+      ptm->setDelayed(prefix, myNonce, true);
     }
-  //   PTManager::getInstance()->print_table();
-  //   std::cout << "Cache Entry " << match->getName() << " is still private" << std::endl;
-  //   missCallback(interest);
-  //   return;
   } else {
     std::cout<<interest.getName()<<" is not private" << std::endl;
     if (ptm->isNamePrivate(prefix)){
       std::cout<<"There are private entry of my name in ptable, delay once, invalidate all" << std::endl;
       ptm->invalidate_all(prefix);
+      ptm->print_table();
       ptm->resetLastPair();
       missCallback(interest);
       return;
     } else {
-      std::cout<<"There is not private entry of my name in ptable, proceed as normal" << std::endl;
+      std::cout<<"There is no private entry of my name in ptable, proceed as normal" << std::endl;
     }
   }
   ptm->resetLastPair();
+
+  }
   // CHANGE NEW
 
   iterator first = m_table.lower_bound(prefix);
