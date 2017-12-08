@@ -154,8 +154,8 @@ Cs::find(const Interest& interest,
         ptm->resetLastPair();
         ptm->setDelayed(prefix, myNonce, true);
         missCallback(interest);
-        if(!Name("/localhost").isPrefixOf(prefix))
-          std::cout<<"MISS"<<std::endl;
+        //if(!Name("/localhost").isPrefixOf(prefix))
+        //  std::cout<<"MISS"<<std::endl;
         return;
       }
     } 
@@ -170,6 +170,7 @@ Cs::find(const Interest& interest,
 
   // if it's not a private request, then any pentries in ptable should be invalidated.
   // The invalidation marks this name as being publicly accessed, so no delay is require anymore.
+  // also add the name to publist.
   else {
     //std::cout<<interest.getName()<<" is not private" << std::endl;
     if (ptm->isNamePrivate(prefix)){
@@ -177,13 +178,14 @@ Cs::find(const Interest& interest,
       ptm->invalidate_all(prefix);
       //ptm->print_table();
       ptm->resetLastPair();
+      ptm->publist_insert(prefix.toUri());
       missCallback(interest);
-            if(!Name("/localhost").isPrefixOf(prefix))
-
-      std::cout<<"MISS"<<std::endl;
+      //if(!Name("/localhost").isPrefixOf(prefix))
+      //  std::cout<<"MISS"<<std::endl;
       return;
     } else {
       //std::cout<<"There is no private entry of my name in ptable, proceed as normal" << std::endl;
+      ptm->publist_insert(prefix.toUri());
     }
   }
   ptm->resetLastPair();
@@ -209,7 +211,7 @@ Cs::find(const Interest& interest,
     NFD_LOG_DEBUG("  no-match");
           if(!Name("/localhost").isPrefixOf(prefix))
 
-    std::cout<<"MISS"<<std::endl;
+    //std::cout<<"MISS"<<std::endl;
     missCallback(interest);
     return;
   }
@@ -218,7 +220,7 @@ Cs::find(const Interest& interest,
   m_policy->beforeUse(match);
         if(!Name("/localhost").isPrefixOf(prefix))
 
-  std::cout<<"HIT"<<std::endl;
+  //std::cout<<"HIT"<<std::endl;
   hitCallback(interest, match->getData());
 }
 

@@ -271,6 +271,7 @@ GenericLinkService::decodeInterest(const Block& netPkt, const lp::Packet& firstP
   // NEW_CHANGE
   bool isPrivate = false;
   std::string nonce = "";
+  std::string actual_name = "";
   std::string iname = interest->getName().toUri();
   int pos = iname.find("%24"); // find the $ sign in name.
 
@@ -282,15 +283,30 @@ GenericLinkService::decodeInterest(const Block& netPkt, const lp::Packet& firstP
     if (lastpart.substr(0,7) == "private"){
       isPrivate = true;
       nonce = lastpart.substr(lastpart.find("+")+1);
-   }
+      actual_name = iname.substr(0,pos);
+    } else {
+      // not a private name.
+      actual_name = iname;
+    }
   }
-  if (isPrivate) {
-    interest->setName(iname.substr(0,pos));
 
-    // insert a new pentry into ptable is there isn't one in it.
-    // otherwise, nothing happens.
-    PTManager::getInstance()->insert_pentry(interest->getName(),nonce);
-    PTManager::getInstance()->setLastPair(true, nonce);
+  // check if the name is in public list, if yes then no modification needed.
+  // if not checking if it's a private request.
+  if(!PTManager::getInstance()->isPublic(interest->getName())){
+
+    if (isPrivate) {
+      interest->setName(actual_name);
+
+      // insert a new pentry into ptable is there isn't one in it.
+      // otherwise, nothing happens.
+      PTManager::getInstance()->insert_pentry(interest->getName(),nonce);
+      PTManager::getInstance()->setLastPair(true, nonce);
+    } else {
+  
+      // *add this name to publist since it's not a private request.
+      // *PTManager::getInstance()->publist_insert(actual_name);
+
+    }
   }
   // CHANGE_NEW
 
