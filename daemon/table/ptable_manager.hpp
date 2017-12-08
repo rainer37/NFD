@@ -14,7 +14,7 @@ namespace nfd {
 class PTManager{
 
 	static PTManager* pt_manager;
-	std::vector<std::string> history_list(); 
+	std::vector<std::string> pubList; 
 	Ptable p_table;
 	std::pair<bool, std::string> last_pair; // current state info.
 
@@ -80,6 +80,14 @@ public:
 
 	// check if pentry with name and nonce has delayed.
 	bool hasDelayed(const Name& name, std::string nonce);
+
+	void publist_insert(std::string name);
+
+	void publist_find(std::string name);
+
+	void publist_remove(std::string name);
+
+	bool isPublic(const Name& name);
 };
 
 } // nfd

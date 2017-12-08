@@ -60,7 +60,7 @@ PEntry*
 Ptable::find_entry(const Name& name, std::string nonce){
 	for(int i = 0; i<capacity; i++) {
 		if(table[i].isValid() && table[i].getName() == name && table[i].getNonce() == nonce) {
-			std::cout<<"Found same entry"<<std::endl;
+			//std::cout<<"Found same entry"<<std::endl;
 			return &table[i];
 		}
 	}
@@ -71,7 +71,7 @@ PEntry*
 Ptable::find_entry(const Name& name){
 	for(int i = 0; i<capacity; i++) {
 		if(table[i].isValid() && table[i].getName() == name) {
-			std::cout<<"Found entry with same name"<<std::endl;
+			//std::cout<<"Found entry with same name"<<std::endl;
 			return &table[i];
 		}
 	}
@@ -102,7 +102,7 @@ bool
 Ptable::find_name_with_diff_nonce(const Name& name, std::string nonce){
 	for(int i = 0; i<capacity; i++) {
 		if(table[i].isValid() && table[i].getName() == name && table[i].getNonce() != nonce) {
-			std::cout<<"Found peer with diff nonce"<<std::endl;
+			//std::cout<<"Found peer with diff nonce"<<std::endl;
 			return true;
 		}
 	}

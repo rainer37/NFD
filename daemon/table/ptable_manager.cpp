@@ -65,4 +65,26 @@ PTManager::hasDelayed(const Name& name, std::string nonce){
 	return p_table.hasDelayed(name, nonce);
 }
 
+void 
+PTManager::publist_insert(std::string name){
+	pubList.push_back(name);
+}
+
+void 
+PTManager::publist_find(std::string name){
+
+}
+
+void 
+PTManager::publist_remove(std::string name){
+	pubList.erase(std::remove(pubList.begin(), pubList.end(), name), pubList.end());
+}
+
+bool 
+PTManager::isPublic(const Name& name){
+	if ( std::find(pubList.begin(), pubList.end(), name.toUri()) != pubList.end() )
+		return true;
+	return false;
+}
+
 }
