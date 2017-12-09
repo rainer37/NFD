@@ -81,13 +81,20 @@ public:
 	// check if pentry with name and nonce has delayed.
 	bool hasDelayed(const Name& name, std::string nonce);
 
+	// insert entry into publist
 	void publist_insert(std::string name);
 
+	// look up a entry in publist not needed
 	void publist_find(std::string name);
 
+	// remove entry in publist
 	void publist_remove(std::string name);
 
+	// check if name is in publist
 	bool isPublic(const Name& name);
+
+	// print publist
+	void print_publist();
 };
 
 } // nfd

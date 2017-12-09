@@ -137,7 +137,7 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
               bind(&Forwarder::onContentStoreMiss, this, ref(inFace), pitEntry, _1));
   }
   else {
-    //std::cout<<"MISS"<<std::endl;
+    std::cout<<"HERE"<<std::endl;
     this->onContentStoreMiss(inFace, pitEntry, interest);
   }
 

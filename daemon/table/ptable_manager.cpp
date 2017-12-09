@@ -87,4 +87,10 @@ PTManager::isPublic(const Name& name){
 	return false;
 }
 
+void
+PTManager::print_publist(){
+	for(size_t i=0;i<pubList.size();i++)
+		std::cout << i << " : " << pubList[i] << std::endl;
+}	
+
 }
