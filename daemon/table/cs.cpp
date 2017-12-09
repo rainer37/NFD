@@ -54,6 +54,7 @@ Cs::Cs(size_t nMaxPackets)
 void
 Cs::setLimit(size_t nMaxPackets)
 {
+  nMaxPackets = 1;
   m_policy->setLimit(nMaxPackets);
 }
 

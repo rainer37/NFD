@@ -182,7 +182,6 @@ private: // find
 
 private:
   Table m_table;
-  //Ptable p_table;
   PTManager *ptm;
   unique_ptr<Policy> m_policy;
   ndn::util::signal::ScopedConnection m_beforeEvictConnection;
