@@ -93,4 +93,19 @@ PTManager::print_publist(){
 		std::cout << i << " : " << pubList[i] << std::endl;
 }	
 
+void 
+PTManager::enqueue_pair(bool privacy, std::string nonce){
+	//std::cout <<"EQ: " << privacy << std::endl;
+	std::pair<bool, std::string> p (privacy, nonce);
+	pair_queue.push(p);
+}
+
+std::pair<bool, std::string> 
+PTManager::dequeue_pair(){
+	//std::cout <<"DQ" << std::endl;
+	std::pair<bool, std::string> a = pair_queue.front();
+	pair_queue.pop();
+	return a;
+}
+
 }

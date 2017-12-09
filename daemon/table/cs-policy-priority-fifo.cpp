@@ -88,8 +88,6 @@ PriorityFifoPolicy::evictOne()
                !m_queues[QUEUE_STALE].empty() ||
                !m_queues[QUEUE_FIFO].empty());
 
-  std::cout<<1<<std::endl;
-
   iterator i;
   if (!m_queues[QUEUE_UNSOLICITED].empty()) {
     i = m_queues[QUEUE_UNSOLICITED].front();

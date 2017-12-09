@@ -154,8 +154,9 @@ Cs::find(const Interest& interest,
           // If not, then this request would have to delay once to protect the privacy of peers.
           else {
             std::cout <<"but i'm first time here, delay once" << std::endl;
-            ptm->resetLastPair();
+            //ptm->resetLastPair();
             ptm->setDelayed(prefix, myNonce, true);
+            ptm->dequeue_pair();
             missCallback(interest);
             return;
           }
@@ -181,7 +182,8 @@ Cs::find(const Interest& interest,
         std::cout<<"There are private entry of my name in ptable, delay once, invalidate all" << std::endl;
         ptm->invalidate_all(prefix);
         ptm->print_table();
-        ptm->resetLastPair();
+        //ptm->resetLastPair();
+        ptm->dequeue_pair();
         missCallback(interest);
         return;
       } else {
@@ -197,7 +199,8 @@ Cs::find(const Interest& interest,
         std::cout << "My name is in PubList, update timer and proceed" << std::endl;
     }
 
-    ptm->resetLastPair();
+    //ptm->resetLastPair();
+    ptm->dequeue_pair();
 
   }
   // CHANGE NEW

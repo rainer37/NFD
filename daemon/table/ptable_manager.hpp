@@ -8,6 +8,7 @@
 	PTManager will also check for the history access of contents in CS.
 */
 #include "ptable.hpp"
+#include <queue>
 
 namespace nfd {
 
@@ -17,7 +18,7 @@ class PTManager{
 	std::vector<std::string> pubList; 
 	Ptable p_table;
 	std::pair<bool, std::string> last_pair; // current state info.
-
+	std::queue<std::pair<bool, std::string>> pair_queue;
 private:
 
 	PTManager();
@@ -31,10 +32,10 @@ public:
 	}
 
 	// return true if is a private request
-	bool amIPrivate() { return last_pair.first; }
+	bool amIPrivate() { return pair_queue.front().first; }
 
 	// return the nonce within the private request
-	std::string getMyNonce() { return last_pair.second; }
+	std::string getMyNonce() { return pair_queue.front().second; }
 
 	// set states
 	void setLastPair(bool privacy, std::string nonce) { last_pair.first = privacy; last_pair.second = nonce; }
@@ -95,6 +96,10 @@ public:
 
 	// print publist
 	void print_publist();
+
+	void enqueue_pair(bool privacy, std::string nonce);
+
+	std::pair<bool, std::string> dequeue_pair();
 };
 
 } // nfd
