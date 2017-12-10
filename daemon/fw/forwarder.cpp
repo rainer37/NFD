@@ -132,13 +132,13 @@ Forwarder::onIncomingInterest(Face& inFace, const Interest& interest)
 
   // is pending?
   if (!pitEntry->hasInRecords()) {
-    std::cout<<"HIT"<<std::endl;
+    //std::cout<<"HIT"<<std::endl;
     m_cs.find(interest,
               bind(&Forwarder::onContentStoreHit, this, ref(inFace), pitEntry, _1, _2),
               bind(&Forwarder::onContentStoreMiss, this, ref(inFace), pitEntry, _1));
   }
   else {
-    std::cout<<"MISS"<<std::endl;
+    //std::cout<<"MISS"<<std::endl;
     this->onContentStoreMiss(inFace, pitEntry, interest);
   }
 
